@@ -1,15 +1,19 @@
 import * as dotenv from "dotenv";
-import { OpenAI } from "langchain";
+import { ChatAnthropic } from "@langchain/anthropic";
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 
 dotenv.config();
 
-const model = new OpenAI({
-  modelName: "gpt-3.5-turbo",
-  openAIApiKey: process.env.OPENAI_API_KEY,
+let model = new ChatAnthropic({
+  model: "claude-3-5-sonnet-20240620",
+  temperature: 0
 });
 
-const res = await model.call(
-  "What's a good idea for an application to build with GPT-3?"
-);
+const messages = [
+  new SystemMessage("Translate the following from English into Italian"),
+  new HumanMessage("hi!"),
+];
+
+let res = await model.invoke(messages);
 
 console.log(res);
